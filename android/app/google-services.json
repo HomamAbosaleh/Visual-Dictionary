@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "716374185791",
+    "project_id": "visual-dictionary-1edcc",
+    "storage_bucket": "visual-dictionary-1edcc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:716374185791:android:8b752afd3cac1b641f658a",
+        "android_client_info": {
+          "package_name": "com.example.visual_dictionary"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt9CLm5gyU9A70H4TOfcuofMqxJzO-Z0g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

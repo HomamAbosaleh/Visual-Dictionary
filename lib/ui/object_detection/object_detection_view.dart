@@ -1,6 +1,9 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_object_detection/google_mlkit_object_detection.dart';
+import 'package:stacked_services/stacked_services.dart';
+import 'package:visual_dictionary/app/app.router.dart';
+
 import 'package:visual_dictionary/common/object_detector_painter.dart';
 import 'package:visual_dictionary/ui/object_detection/detector_view.dart';
 
@@ -14,6 +17,7 @@ class ObjectDetectionView extends StatefulWidget {
 }
 
 class _ObjectDetectionViewState extends State<ObjectDetectionView> {
+  NavigationService navigationService = NavigationService();
   late ObjectDetector _objectDetector;
   bool _canProcess = false;
   bool _isBusy = false;
@@ -47,7 +51,8 @@ class _ObjectDetectionViewState extends State<ObjectDetectionView> {
     _canProcess = true;
   }
 
-  Future<void> _processImage(InputImage inputImage) async {
+  Future<void> _processImage(
+      InputImage inputImage, ImageProvider imageProvider) async {
     if (!_canProcess) return;
     if (_isBusy) return;
     _isBusy = true;
@@ -55,24 +60,43 @@ class _ObjectDetectionViewState extends State<ObjectDetectionView> {
       _text = '';
     });
     final objects = await _objectDetector.processImage(inputImage);
-    // print('Objects found: ${objects.length}\n\n');
+
+    final DetectedObject highestConfidenceObject = objects.reduce((a, b) {
+      final aMaxConfidence = a.labels.isNotEmpty
+          ? a.labels
+              .reduce((c, d) => c.confidence > d.confidence ? c : d)
+              .confidence
+          : 0.0;
+      final bMaxConfidence = b.labels.isNotEmpty
+          ? b.labels
+              .reduce((c, d) => c.confidence > d.confidence ? c : d)
+              .confidence
+          : 0.0;
+      return aMaxConfidence > bMaxConfidence ? a : b;
+    });
+
     if (inputImage.metadata?.size != null &&
         inputImage.metadata?.rotation != null) {
       final painter = ObjectDetectorPainter(
-        objects,
+        highestConfidenceObject,
         inputImage.metadata!.size,
         inputImage.metadata!.rotation,
         _cameraLensDirection,
       );
-      _customPaint = CustomPaint(painter: painter);
+
+      navigationService.navigateToImagePreviewView(
+          painter: painter,
+          image: imageProvider,
+          type: highestConfidenceObject.labels.first.text);
     } else {
+      print("Hello");
       String text = 'Objects found: ${objects.length}\n\n';
       for (final object in objects) {
         text +=
             'Object:  trackingId: ${object.trackingId} - ${object.labels.map((e) => e.text)}\n\n';
       }
+
       _text = text;
-      // TODO: set _customPaint to draw boundingRect on top of image
       _customPaint = null;
     }
     _isBusy = false;

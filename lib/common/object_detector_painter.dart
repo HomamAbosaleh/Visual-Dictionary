@@ -9,17 +9,17 @@ import 'package:google_mlkit_object_detection/google_mlkit_object_detection.dart
 import 'coordinates_translator.dart';
 
 class ObjectDetectorPainter extends CustomPainter {
+  final DetectedObject _object;
+  final Size imageSize;
+  final InputImageRotation rotation;
+  final CameraLensDirection cameraLensDirection;
+
   ObjectDetectorPainter(
-    this._objects,
+    this._object,
     this.imageSize,
     this.rotation,
     this.cameraLensDirection,
   );
-
-  final List<DetectedObject> _objects;
-  final Size imageSize;
-  final InputImageRotation rotation;
-  final CameraLensDirection cameraLensDirection;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -28,10 +28,9 @@ class ObjectDetectorPainter extends CustomPainter {
       ..strokeWidth = 3.0
       ..color = Colors.lightGreenAccent;
 
-    final Paint background = Paint()..color = Color(0x99000000);
+    final Paint background = Paint()..color = const Color(0x99000000);
 
-    for (final DetectedObject detectedObject in _objects) {
-      final ParagraphBuilder builder = ParagraphBuilder(
+    final ParagraphBuilder builder = ParagraphBuilder(
         ParagraphStyle(
             textAlign: TextAlign.left,
             fontSize: 16,
@@ -39,36 +38,36 @@ class ObjectDetectorPainter extends CustomPainter {
       );
       builder.pushStyle(
           ui.TextStyle(color: Colors.lightGreenAccent, background: background));
-      if (detectedObject.labels.isNotEmpty) {
-        final label = detectedObject.labels
-            .reduce((a, b) => a.confidence > b.confidence ? a : b);
-        builder.addText('${label.text} ${label.confidence}\n');
+      if (_object.labels.isNotEmpty) {
+        // final label = _object.labels
+        //     .reduce((a, b) => a.confidence > b.confidence ? a : b);
+        builder.addText('${_object.labels.first.text} ${_object.labels.first.confidence}\n');
       }
       builder.pop();
 
       final left = translateX(
-        detectedObject.boundingBox.left,
+        _object.boundingBox.left,
         size,
         imageSize,
         rotation,
         cameraLensDirection,
       );
       final top = translateY(
-        detectedObject.boundingBox.top,
+        _object.boundingBox.top,
         size,
         imageSize,
         rotation,
         cameraLensDirection,
       );
       final right = translateX(
-        detectedObject.boundingBox.right,
+        _object.boundingBox.right,
         size,
         imageSize,
         rotation,
         cameraLensDirection,
       );
       final bottom = translateY(
-        detectedObject.boundingBox.bottom,
+        _object.boundingBox.bottom,
         size,
         imageSize,
         rotation,
@@ -92,7 +91,6 @@ class ObjectDetectorPainter extends CustomPainter {
                 : left,
             top),
       );
-    }
   }
 
   @override

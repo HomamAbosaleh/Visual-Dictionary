@@ -9,9 +9,9 @@ import 'package:flutter/material.dart' as _i5;
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart' as _i1;
 import 'package:stacked_services/stacked_services.dart' as _i6;
-import 'package:visual_dictionary/ui/main/main_view.dart' as _i3;
-import 'package:visual_dictionary/ui/object_detection/object_detection_view.dart'
+import 'package:visual_dictionary/ui/image_preview/image_preview_view.dart'
     as _i4;
+import 'package:visual_dictionary/ui/main/main_view.dart' as _i3;
 import 'package:visual_dictionary/ui/splash/splash_view.dart' as _i2;
 
 class Routes {
@@ -19,12 +19,12 @@ class Routes {
 
   static const mainView = '/main-view';
 
-  static const objectDetectionView = '/object-detection-view';
+  static const imagePreviewView = '/image-preview-view';
 
   static const all = <String>{
     splashView,
     mainView,
-    objectDetectionView,
+    imagePreviewView,
   };
 }
 
@@ -39,8 +39,8 @@ class StackedRouter extends _i1.RouterBase {
       page: _i3.MainView,
     ),
     _i1.RouteDef(
-      Routes.objectDetectionView,
-      page: _i4.ObjectDetectionView,
+      Routes.imagePreviewView,
+      page: _i4.ImagePreviewView,
     ),
   ];
 
@@ -57,9 +57,14 @@ class StackedRouter extends _i1.RouterBase {
         settings: data,
       );
     },
-    _i4.ObjectDetectionView: (data) {
+    _i4.ImagePreviewView: (data) {
+      final args = data.getArgs<ImagePreviewViewArguments>(nullOk: false);
       return _i5.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i4.ObjectDetectionView(),
+        builder: (context) => _i4.ImagePreviewView(
+            key: args.key,
+            type: args.type,
+            image: args.image,
+            painter: args.painter),
         settings: data,
       );
     },
@@ -70,6 +75,42 @@ class StackedRouter extends _i1.RouterBase {
 
   @override
   Map<Type, _i1.StackedRouteFactory> get pagesMap => _pagesMap;
+}
+
+class ImagePreviewViewArguments {
+  const ImagePreviewViewArguments({
+    this.key,
+    required this.type,
+    required this.image,
+    required this.painter,
+  });
+
+  final _i5.Key? key;
+
+  final String type;
+
+  final _i5.ImageProvider<Object> image;
+
+  final _i5.CustomPainter painter;
+
+  @override
+  String toString() {
+    return '{"key": "$key", "type": "$type", "image": "$image", "painter": "$painter"}';
+  }
+
+  @override
+  bool operator ==(covariant ImagePreviewViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key &&
+        other.type == type &&
+        other.image == image &&
+        other.painter == painter;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode ^ type.hashCode ^ image.hashCode ^ painter.hashCode;
+  }
 }
 
 extension NavigatorStateExtension on _i6.NavigationService {
@@ -101,14 +142,20 @@ extension NavigatorStateExtension on _i6.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToObjectDetectionView([
+  Future<dynamic> navigateToImagePreviewView({
+    _i5.Key? key,
+    required String type,
+    required _i5.ImageProvider<Object> image,
+    required _i5.CustomPainter painter,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
-    return navigateTo<dynamic>(Routes.objectDetectionView,
+  }) async {
+    return navigateTo<dynamic>(Routes.imagePreviewView,
+        arguments: ImagePreviewViewArguments(
+            key: key, type: type, image: image, painter: painter),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -143,14 +190,20 @@ extension NavigatorStateExtension on _i6.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithObjectDetectionView([
+  Future<dynamic> replaceWithImagePreviewView({
+    _i5.Key? key,
+    required String type,
+    required _i5.ImageProvider<Object> image,
+    required _i5.CustomPainter painter,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
-    return replaceWith<dynamic>(Routes.objectDetectionView,
+  }) async {
+    return replaceWith<dynamic>(Routes.imagePreviewView,
+        arguments: ImagePreviewViewArguments(
+            key: key, type: type, image: image, painter: painter),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

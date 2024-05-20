@@ -39,7 +39,18 @@ dependencies:
   camera: ^0.10.5+4
   image_picker: ^1.0.4
   path_provider: ^2.1.1
+  flutter_image: ^4.1.11
 
+  #http
+  http: ^1.2.0
+
+  #FIREBASE
+  firebase_core: ^2.27.0
+  firebase_auth: ^4.17.8
+  cloud_firestore: ^4.15.8
+
+  #DI
+  get_it: ^7.6.7
 
   #STATE_MANAGEMENT
   stacked: ^3.0.1

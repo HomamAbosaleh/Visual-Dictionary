@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:visual_dictionary/app/app.router.dart';
 
+import 'package:visual_dictionary/ui/main/create_bottom_nav_item.dart';
 import 'package:visual_dictionary/ui/main/main_view_model.dart';
 
 class MainView extends StatelessWidget {
@@ -14,18 +14,19 @@ class MainView extends StatelessWidget {
       onViewModelReady: (model) => model.init(),
       builder: (context, viewModel, child) => Scaffold(
         backgroundColor: Colors.white,
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            MaterialButton(
-              color: Colors.purple,
-              child: const Text("Object Detection"),
-              onPressed: () {
-                viewModel.navigationService.navigateTo(Routes.objectDetectionView);
-              },
-            )
+        bottomNavigationBar: BottomNavigationBar(
+          elevation: 0,
+          type: BottomNavigationBarType.fixed,
+          items: [
+            createNavItem(TabItem.Home),
+            createNavItem(TabItem.ObjectDetection),
           ],
+          onTap: (value) {
+            viewModel.setTabIndex(value);
+          },
+          currentIndex: viewModel.currentTabIndex,
         ),
+        body: getViewForIndex(viewModel.currentTabIndex),
       ),
     );
   }

@@ -1,19 +1,19 @@
 import 'package:visual_dictionary/app/app_view_model.dart';
 import 'package:visual_dictionary/models/responses/firebase_image.dart';
 
-class MainViewModel extends AppViewModel {
+class HomeViewModel extends AppViewModel {
   List<FirebaseImage> images = [];
-  int _currentTabIndex = 0;
-  int get currentTabIndex => _currentTabIndex;
-  
-  void setTabIndex(int value) {
-    _currentTabIndex = value;
-    notifyListeners();
-  }
+  List<bool> expended = [];
 
   @override
   init() async {
     images = await firebaseService.getImages();
+    expended = List.generate(images.length, (int index) => false);
+    notifyListeners();
+  }
+
+  expandAccordion(int index, bool isExpanded) {
+    expended[index] = !expended[index];
     notifyListeners();
   }
 }
