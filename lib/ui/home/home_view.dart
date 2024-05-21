@@ -13,33 +13,42 @@ class HomeView extends StatelessWidget {
       viewModelBuilder: () => HomeViewModel(),
       onViewModelReady: (model) => model.init(),
       builder: (context, viewModel, child) => Scaffold(
-        backgroundColor: Colors.white,
-        body: SingleChildScrollView(
-            child: Padding(
-          padding: const EdgeInsets.all(2.0),
-          child: ExpansionPanelList(
-              expansionCallback: viewModel.expandAccordion,
-              children: viewModel.images
-                  .map(
-                    (image) => ExpansionPanel(
-                      headerBuilder: (BuildContext context, bool isExpanded) {
-                        return ListTile(
-                          leading: Image(
-                            image: FileImage(
-                              File(image.path),
-                            ),
+        backgroundColor: const Color(0xFF69C7D0),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: ExpansionPanelList(
+                  expansionCallback: viewModel.expandAccordion,
+                  children: viewModel.images
+                      .map(
+                        (image) => ExpansionPanel(
+                          headerBuilder:
+                              (BuildContext context, bool isExpanded) {
+                            return ListTile(
+                              leading: Image(
+                                image: FileImage(
+                                  File(image.path),
+                                ),
+                              ),
+                              title: Text(image.type),
+                            );
+                          },
+                          body: ListTile(
+                            title: Text(image.description),
                           ),
-                          title: Text(image.type),
-                        );
-                      },
-                      body: ListTile(
-                        title: Text(image.description),
-                      ),
-                      isExpanded: viewModel.expended[viewModel.images.indexOf(image)],
-                    ),
-                  )
-                  .toList()),
-        )),
+                          isExpanded: viewModel
+                              .expended[viewModel.images.indexOf(image)],
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

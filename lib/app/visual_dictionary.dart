@@ -15,15 +15,13 @@ class VisualDictionary extends StatelessWidget {
       viewModelBuilder: () => locator<AppViewModel>(),
       onViewModelReady: (model) => model.init(),
       builder: (context, viewModel, child) => MaterialApp(
-        title: 'ML Kit Examples',
+        title: 'DictionAIry',
         navigatorKey: StackedService.navigatorKey,
         onGenerateRoute: StackedRouter().onGenerateRoute,
         navigatorObservers: [StackedService.routeObserver],
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.deepPurple,
-          ),
+          primarySwatch: Colors.blue,
           useMaterial3: true,
         ),
       ),

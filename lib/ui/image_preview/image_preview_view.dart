@@ -40,12 +40,15 @@ class ImagePreviewView extends StatelessWidget {
               ),
             ),
             Positioned(
-              bottom: 0,
-              width: MediaQuery.of(context).size.width,
-              child: Text(
-                viewModel.description ?? '',
-                style: const TextStyle(
+              top: 28,
+              right: 0,
+              child: SizedBox(
+                height: 50.0,
+                child: FloatingActionButton(
+                  heroTag: Object(),
+                  onPressed: () => Navigator.of(context).pop(),
                   backgroundColor: Colors.white,
+                  child: const Text("İptal"),
                 ),
               ),
             ),
@@ -54,26 +57,11 @@ class ImagePreviewView extends StatelessWidget {
               left: 0,
               child: SizedBox(
                 height: 50.0,
-                width: 50.0,
-                child: FloatingActionButton(
-                  heroTag: Object(),
-                  onPressed: () => Navigator.of(context).pop(),
-                  backgroundColor: Colors.white,
-                  child: const Text("Cancel"),
-                ),
-              ),
-            ),
-            Positioned(
-              top: 28,
-              right: 0,
-              child: SizedBox(
-                height: 50.0,
-                width: 50.0,
                 child: FloatingActionButton(
                   heroTag: Object(),
                   onPressed: () => viewModel.takeScreenshot(),
                   backgroundColor: Colors.white,
-                  child: const Text("Save"),
+                  child: const Text("Kaydet"),
                 ),
               ),
             ),

@@ -20,6 +20,7 @@ class MainView extends StatelessWidget {
           items: [
             createNavItem(TabItem.Home),
             createNavItem(TabItem.ObjectDetection),
+            createNavItem(TabItem.Profile),
           ],
           onTap: (value) {
             viewModel.setTabIndex(value);

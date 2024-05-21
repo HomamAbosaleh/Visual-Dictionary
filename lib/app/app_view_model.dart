@@ -9,7 +9,7 @@ class AppViewModel extends BaseViewModel {
   final NavigationService navigationService = locator<NavigationService>();
   final FirebaseService firebaseService = locator<FirebaseService>();
   final WikipediaService wikipediaService = locator<WikipediaService>();
-  
+
   init() {
     firebaseService.init();
   }

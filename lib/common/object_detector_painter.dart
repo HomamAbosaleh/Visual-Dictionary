@@ -13,12 +13,14 @@ class ObjectDetectorPainter extends CustomPainter {
   final Size imageSize;
   final InputImageRotation rotation;
   final CameraLensDirection cameraLensDirection;
+  final String text;
 
   ObjectDetectorPainter(
     this._object,
     this.imageSize,
     this.rotation,
     this.cameraLensDirection,
+    this.text,
   );
 
   @override
@@ -41,7 +43,7 @@ class ObjectDetectorPainter extends CustomPainter {
       if (_object.labels.isNotEmpty) {
         // final label = _object.labels
         //     .reduce((a, b) => a.confidence > b.confidence ? a : b);
-        builder.addText('${_object.labels.first.text} ${_object.labels.first.confidence}\n');
+        builder.addText('$text ${_object.labels.first.confidence}\n');
       }
       builder.pop();
 

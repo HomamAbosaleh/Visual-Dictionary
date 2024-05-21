@@ -37,9 +37,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   google_mlkit_object_detection: ^0.13.0
   camera: ^0.10.5+4
-  image_picker: ^1.0.4
   path_provider: ^2.1.1
   flutter_image: ^4.1.11
+  translator: ^1.0.0
 
   #http
   http: ^1.2.0
@@ -84,6 +84,7 @@ flutter:
   assets:
     - assets/
     - assets/ml/
+    - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

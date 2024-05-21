@@ -5,10 +5,12 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:flutter/material.dart' as _i5;
+import 'package:flutter/material.dart' as _i6;
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i6;
+import 'package:stacked_services/stacked_services.dart' as _i7;
+import 'package:visual_dictionary/ui/authenticate/authenticate_view.dart'
+    as _i5;
 import 'package:visual_dictionary/ui/image_preview/image_preview_view.dart'
     as _i4;
 import 'package:visual_dictionary/ui/main/main_view.dart' as _i3;
@@ -21,10 +23,13 @@ class Routes {
 
   static const imagePreviewView = '/image-preview-view';
 
+  static const authenticateView = '/authenticate-view';
+
   static const all = <String>{
     splashView,
     mainView,
     imagePreviewView,
+    authenticateView,
   };
 }
 
@@ -42,29 +47,42 @@ class StackedRouter extends _i1.RouterBase {
       Routes.imagePreviewView,
       page: _i4.ImagePreviewView,
     ),
+    _i1.RouteDef(
+      Routes.authenticateView,
+      page: _i5.AuthenticateView,
+    ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
     _i2.SplashView: (data) {
-      return _i5.MaterialPageRoute<dynamic>(
+      return _i6.MaterialPageRoute<dynamic>(
         builder: (context) => const _i2.SplashView(),
         settings: data,
       );
     },
     _i3.MainView: (data) {
-      return _i5.MaterialPageRoute<dynamic>(
+      return _i6.MaterialPageRoute<dynamic>(
         builder: (context) => const _i3.MainView(),
         settings: data,
       );
     },
     _i4.ImagePreviewView: (data) {
       final args = data.getArgs<ImagePreviewViewArguments>(nullOk: false);
-      return _i5.MaterialPageRoute<dynamic>(
+      return _i6.MaterialPageRoute<dynamic>(
         builder: (context) => _i4.ImagePreviewView(
             key: args.key,
             type: args.type,
             image: args.image,
             painter: args.painter),
+        settings: data,
+      );
+    },
+    _i5.AuthenticateView: (data) {
+      final args = data.getArgs<AuthenticateViewArguments>(
+        orElse: () => const AuthenticateViewArguments(),
+      );
+      return _i6.MaterialPageRoute<dynamic>(
+        builder: (context) => _i5.AuthenticateView(key: args.key),
         settings: data,
       );
     },
@@ -85,13 +103,13 @@ class ImagePreviewViewArguments {
     required this.painter,
   });
 
-  final _i5.Key? key;
+  final _i6.Key? key;
 
   final String type;
 
-  final _i5.ImageProvider<Object> image;
+  final _i6.ImageProvider<Object> image;
 
-  final _i5.CustomPainter painter;
+  final _i6.CustomPainter painter;
 
   @override
   String toString() {
@@ -113,7 +131,29 @@ class ImagePreviewViewArguments {
   }
 }
 
-extension NavigatorStateExtension on _i6.NavigationService {
+class AuthenticateViewArguments {
+  const AuthenticateViewArguments({this.key});
+
+  final _i6.Key? key;
+
+  @override
+  String toString() {
+    return '{"key": "$key"}';
+  }
+
+  @override
+  bool operator ==(covariant AuthenticateViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode;
+  }
+}
+
+extension NavigatorStateExtension on _i7.NavigationService {
   Future<dynamic> navigateToSplashView([
     int? routerId,
     bool preventDuplicates = true,
@@ -143,10 +183,10 @@ extension NavigatorStateExtension on _i6.NavigationService {
   }
 
   Future<dynamic> navigateToImagePreviewView({
-    _i5.Key? key,
+    _i6.Key? key,
     required String type,
-    required _i5.ImageProvider<Object> image,
-    required _i5.CustomPainter painter,
+    required _i6.ImageProvider<Object> image,
+    required _i6.CustomPainter painter,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -156,6 +196,22 @@ extension NavigatorStateExtension on _i6.NavigationService {
     return navigateTo<dynamic>(Routes.imagePreviewView,
         arguments: ImagePreviewViewArguments(
             key: key, type: type, image: image, painter: painter),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToAuthenticateView({
+    _i6.Key? key,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo<dynamic>(Routes.authenticateView,
+        arguments: AuthenticateViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -191,10 +247,10 @@ extension NavigatorStateExtension on _i6.NavigationService {
   }
 
   Future<dynamic> replaceWithImagePreviewView({
-    _i5.Key? key,
+    _i6.Key? key,
     required String type,
-    required _i5.ImageProvider<Object> image,
-    required _i5.CustomPainter painter,
+    required _i6.ImageProvider<Object> image,
+    required _i6.CustomPainter painter,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -204,6 +260,22 @@ extension NavigatorStateExtension on _i6.NavigationService {
     return replaceWith<dynamic>(Routes.imagePreviewView,
         arguments: ImagePreviewViewArguments(
             key: key, type: type, image: image, painter: painter),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithAuthenticateView({
+    _i6.Key? key,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return replaceWith<dynamic>(Routes.authenticateView,
+        arguments: AuthenticateViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
